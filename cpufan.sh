@@ -18,6 +18,7 @@ sleep_time=9
 while [ $i -lt 6 ]; do # 6 ten-second intervals in 1 minute
     PREVIOUS_SPEED=`cat $CPU_FAN`
     CPU_TEMP=`sensors coretemp-isa-0000 | grep "CPU Temp" | grep -o '[0-9]*' | head -1`
+    CPU_TEMP=$((CPU_TEMP)) # Convert to Number
 
     echo "CPU Temp: "$CPU_TEMP""
 
@@ -27,7 +28,7 @@ while [ $i -lt 6 ]; do # 6 ten-second intervals in 1 minute
         NEW_PWM=$((FAN_HIGH_PWM))
     elif ((CPU_TEMP >= 30 && CPU_TEMP < 35)); then
         NEW_PWM=$((FAN_LOW_PWM + 35))
-    elif ((CPU_TEMP >= 35 && CPU_TEMP < 40)); then
+    elif ((CPU_TEMP >= 35 && $CPU_TEMP < 40)); then
         NEW_PWM=$((FAN_LOW_PWM + 35*2))
     elif ((CPU_TEMP >= 40 && CPU_TEMP < 50)); then
         NEW_PWM=$((FAN_LOW_PWM + 35*3))
