@@ -20,9 +20,9 @@ if [ "$CPU_FAN" != "1" ]; then
 fi
 
 PREVIOUS_SPEED=`cat $CPU_FAN`
+CPU_TEMP=`sensors coretemp-isa-0000 | grep "CPU Temp" | grep -o '[0-9]*' | head -1`
 
-# TODO: Get from sensors
-CPU_TEMP=30
+echo "CPU Temp: "$CPU_TEMP""
 
 if [ "$CPU_TEMP" -le "$LOW_TEMP" ]; then 
   echo $FAN_LOW_PWM  > $CPU_FAN
@@ -46,8 +46,8 @@ fi
 # produce output if the fan speed was changed
 CURRENT_SPEED=`cat $CPU_FAN`
 if [ "$PREVIOUS_SPEED" -ne "$CURRENT_SPEED" ]; then
-  echo "Fan speed has changed."
+  echo "Fan speed has changed to PWM: "$CURRENT_SPEED" CPU temp: "$CPU_TEMP""
   echo "${OUTPUT}"
 else
-  echo "Fan speed unchanged. Highest temp: "$HIGHEST_TEMP" Current pwm: "$CURRENT_SPEED
+  echo "Fan speed unchanged. CPU temp: "$CPU_TEMP" PWM: "$CURRENT_SPEED""
 fi
