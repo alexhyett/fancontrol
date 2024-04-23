@@ -2,6 +2,7 @@
 # Inspired by https://github.com/kmwoley/unRAID-Tools/blob/master/unraid_array_fan.sh
 
 # User Defined variables
+FAN_OFF_PWM=0
 FAN_LOW_PWM=90
 FAN_HIGH_PWM=255
 FAN_START_PWM=100 # technically 90 but setting higher to ensure fan is running
@@ -30,7 +31,7 @@ MOTHERBOARD_TEMP=`sensors acpitz-acpi-0 | grep "MB Temp" | grep -o '[0-9]*' | he
 echo "MB Temp: "$MOTHERBOARD_TEMP""
 
 if [ "$MOTHERBOARD_TEMP" -le "$LOW_TEMP" ]; then 
-  echo $FAN_LOW_PWM  > $FRONT_FAN
+  echo $FAN_OFF_PWM  > $FRONT_FAN # Turn off front fan, as hard drive fan already on.
   echo $FAN_LOW_PWM  > $REAR_FAN
   OUTPUT+="Setting pwm to: "$FAN_LOW_PWM$'\n'
 elif [ "$MOTHERBOARD_TEMP" -ge "$HIGH_TEMP" ]; then
